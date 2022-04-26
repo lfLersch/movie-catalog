@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:movie_catalog/components/poster-container.dart';
+
+import '../constants.dart';
 
 class CatalogScreen extends StatefulWidget {
   static const String id = 'catalog_screen';
@@ -11,6 +14,37 @@ class CatalogScreen extends StatefulWidget {
 class _CatalogScreenState extends State<CatalogScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          padding: new EdgeInsets.all(35),
+          child: Column(
+            children: [
+              const Align(
+                alignment: Alignment.centerLeft,
+                  child: Text(kTextTitle,
+                      style: kTextStyleTitle)),
+              SizedBox(height: 30),
+              TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide(
+                        width: 0,
+                        style: BorderStyle.none,
+                      ),
+                    ),
+                    prefixIcon: Icon(Icons.search),
+                    filled: true,
+                    hintText: kTextSearchTextField,
+                    fillColor: kColorsGrey),
+              ),
+              SizedBox(height: 30),
+              PosterContainer(),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
