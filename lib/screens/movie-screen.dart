@@ -117,7 +117,7 @@ class _MovieScreenState extends State<MovieScreen> {
         image: DecorationImage(
             image: movie.posterPath == null
                 ? const NetworkImage(Strings.noPosterURL)
-                : NetworkImage(NetworkHelper.urlPostsBank + movie.posterPath!),
+                : NetworkImage(TMDBHelper.urlPostsBank + movie.posterPath!),
             fit: BoxFit.cover),
       ),
     );

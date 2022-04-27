@@ -30,7 +30,7 @@ class Colours {
 class TextStyles {
   static const textStyleBack = TextStyle(
       color: Colours.gray02, fontWeight: FontWeight.w500, fontSize: 12);
-  static const textStyleTitle = TextStyle(color: Colours.title, fontSize: 20);
+  static const textStyleTitle = TextStyle(color: Colours.gray01, fontSize: 20, fontWeight: FontWeight.w600);
   static const textStyleMovieTitle =
       TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600);
   static const textStyleMovieCategory =

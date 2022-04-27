@@ -28,7 +28,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          padding: new EdgeInsets.all(35),
+          padding: new EdgeInsets.fromLTRB(35, 50,35,35),
           child: Column(
             children: [
               buildTitle(),

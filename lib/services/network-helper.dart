@@ -4,7 +4,7 @@ import 'dart:convert';
 class NetworkHelper {
   NetworkHelper(this.url);
 
-  static const urlPostsBank = 'https://image.tmdb.org/t/p/original';
+
 
   final String url;
 

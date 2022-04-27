@@ -7,7 +7,7 @@ const tmdbUrlSpecific = 'https://api.themoviedb.org/3/movie/';
 
 
 class TMDBHelper {
-
+  static const urlPostsBank = 'https://image.tmdb.org/t/p/original';
 
   Future<List<Movie>> getMovieListFromTMDB(String movieName) async {
     NetworkHelper networkHelper =

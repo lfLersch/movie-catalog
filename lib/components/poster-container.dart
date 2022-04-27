@@ -4,6 +4,7 @@ import 'package:movie_catalog/Models/movie.dart';
 import 'package:movie_catalog/constants.dart';
 import 'package:movie_catalog/screens/movie-screen.dart';
 import 'package:movie_catalog/services/network-helper.dart';
+import 'package:movie_catalog/services/tmdb-helper.dart';
 
 class PosterContainer extends StatefulWidget {
   final Movie movie;
@@ -28,7 +29,7 @@ class _PosterContainerState extends State<PosterContainer> {
             image: DecorationImage( image:
                  widget.movie.posterPath == null
                 ?  const NetworkImage(Strings.noPosterURL)
-                    : NetworkImage(NetworkHelper.urlPostsBank + widget.movie.posterPath!), fit: BoxFit.cover),),
+                    : NetworkImage(TMDBHelper.urlPostsBank + widget.movie.posterPath!), fit: BoxFit.cover),),
         child: Container(
           padding: EdgeInsets.fromLTRB(24, 0 , 0, 32),
           decoration: BoxDecoration(
