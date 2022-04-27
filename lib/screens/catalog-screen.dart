@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:movie_catalog/components/poster-container.dart';
 
+import '../Models/movie.dart';
 import '../constants.dart';
+import '../services/catalog.dart';
 
 class CatalogScreen extends StatefulWidget {
   static const String id = 'catalog_screen';
@@ -40,11 +42,33 @@ class _CatalogScreenState extends State<CatalogScreen> {
                     fillColor: kColorsGrey),
               ),
               SizedBox(height: 30),
-              PosterContainer(),
-            ],
+              FutureBuilder(
+                  future: Catalog().getMovieListFromTMDB('marvel') ,
+                  builder: (context, snapshot){
+                    if(snapshot.hasData){
+                      return Wrap(
+                          direction: Axis.vertical,
+                          spacing: 20,
+                          children:
+                           getPosterList(snapshot.data as List<Movie>)
+                      );
+                    }
+                    return Container();
+
+                    
+                  },
+              )],
           ),
         ),
       ),
     );
+  }
+
+  getPosterList(List<Movie> movies) {
+    List<Widget> posters = [];
+    for(var movie in movies){
+      posters.add(PosterContainer(movie));
+    }
+    return posters;
   }
 }

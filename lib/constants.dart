@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+
+
 
 const kTexturl =
-    'https://upload.wikimedia.org/wikipedia/pt/thumb/5/59/Captain_Marvel_%282018%29.jpg/250px-Captain_Marvel_%282018%29.jpg';
+    'https://www.cer-cavalos.com/images/not_found.png';
 const kTextTitle = 'Filmes';
 const kTextSearchTextField = 'Pesquise filmes';
 const kTextDesc = 'Aventura sobre Carol Danvers, uma agente da CIA que tem contato com uma raça alienígena e ganha poderes sobre-humanos. Entre os seus poderes estão uma força fora do comum e a habilidade de voar.';
@@ -29,3 +33,4 @@ const kTextStyleMovieTitle = TextStyle(color: kColorMovieTitle, fontSize: 16, fo
 const kTextStyleMovieCategory = TextStyle(color: kColorMovieTitle, fontSize: 10);
 
 
+//https://api.themoviedb.org/3/search/movie?api_key=1741ee8ca22dabdb71c5011551a13f40&query=Fight

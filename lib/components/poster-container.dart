@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_catalog/Models/movie.dart';
 import 'package:movie_catalog/constants.dart';
 import 'package:movie_catalog/screens/movie-screen.dart';
+import 'package:movie_catalog/services/network-helper.dart';
 
 class PosterContainer extends StatefulWidget {
-  const PosterContainer({Key? key}) : super(key: key);
+  final Movie movie;
+  const PosterContainer(this.movie, {Key? key}) : super(key: key);
 
   @override
   _PosterContainerState createState() => _PosterContainerState();
@@ -14,16 +17,18 @@ class _PosterContainerState extends State<PosterContainer> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, MovieScreen.id),
+      onTap: () => Navigator.pushNamed(context, MovieScreen.id, arguments: widget.movie),
       child: Container(
         height: 470,
         width: 320,
-        decoration: const BoxDecoration(
+        decoration:  BoxDecoration(
             borderRadius: BorderRadius.all(
               Radius.circular(25),
             ),
-            image: DecorationImage(
-                image: NetworkImage(kTexturl), fit: BoxFit.cover),),
+            image: DecorationImage( image:
+                 widget.movie.posterPath == null
+                ?  NetworkImage(kTexturl)
+                    : NetworkImage(NetworkHelper.urlPostsBank + widget.movie.posterPath!), fit: BoxFit.cover),),
         child: Container(
           padding: EdgeInsets.fromLTRB(24, 0 , 0, 32),
           decoration: BoxDecoration(
@@ -43,16 +48,16 @@ class _PosterContainerState extends State<PosterContainer> {
               )),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: const [
+            children:  [
               Align(
                 alignment: Alignment.bottomLeft,
-                child: Text('CAPITÃ MARVEL', style: kTextStyleMovieTitle),
+                child: Text(widget.movie.title.toUpperCase(), style: kTextStyleMovieTitle),
               ),
               SizedBox(height: 12),
               Align(
                   alignment: Alignment.bottomLeft,
                   child: Text(
-                    'Ação - Aventura',
+                    widget.movie.genresAsString(),
                     style: kTextStyleMovieCategory,
                   )),
             ],
