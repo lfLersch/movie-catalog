@@ -36,7 +36,9 @@ class Movie{
     for(var producer in movieData['production_companies']){
       producers += producer['name'] + ', ';
     }
-    producers = producers.substring(0, producers.length-2);
+    if(producers.length>2) {
+      producers = producers.substring(0, producers.length-2);
+    }
 
     var movieCastCrew = movieJson[1];
     var genericMap = movieCastCrew['cast'];
@@ -55,7 +57,9 @@ class Movie{
         directors += crew['name'] + ', ';
       }
     }
-     directors = directors.substring(0, directors.length-2);
+    if(directors.length > 2) {
+      directors = directors.substring(0, directors.length-2);
+    }
   }
 
 }
