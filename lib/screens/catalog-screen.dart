@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_catalog/components/poster-container.dart';
 
 import '../Models/movie.dart';
-import '../catalog-bloc.dart';
+import '../bloc/catalog-bloc.dart';
 import '../constants.dart';
 
 class CatalogScreen extends StatefulWidget {
@@ -14,6 +14,7 @@ class CatalogScreen extends StatefulWidget {
 
 class _CatalogScreenState extends State<CatalogScreen> {
   var bloc = new CatalogBloc();
+  bool loading = false;
   List<Movie> movies = [];
 
   @override
@@ -30,39 +31,60 @@ class _CatalogScreenState extends State<CatalogScreen> {
           padding: new EdgeInsets.all(35),
           child: Column(
             children: [
-              const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(Strings.title, style: TextStyles.textStyleMovieTitle)),
-              SizedBox(height: 30),
-              TextField(
-                onSubmitted: (value) async {
-                  bloc.searchMovies(value);
-                  setState(() {});
-                },
-                textInputAction: TextInputAction.search,
-                controller: bloc.movieNameController,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: BorderSide(
-                        width: 0,
-                        style: BorderStyle.none,
-                      ),
-                    ),
-                    prefixIcon: Icon(Icons.search),
-                    filled: true,
-                    hintText: Strings.search,
-                    fillColor: Colours.grey),
-              ),
-              SizedBox(height: 30),
-              if (bloc.movies.isNotEmpty)
-                Wrap(direction: Axis.vertical, spacing: 20, children: [
-                  for (var movie in bloc.movies) PosterContainer(movie)
-                ]),
+              buildTitle(),
+              buildspace(),
+              buildSearchField(),
+              buildspace(),
+              if (loading) buildLoading() else buildPosters(),
             ],
           ),
         ),
       ),
     );
+  }
+
+  CircularProgressIndicator buildLoading() => CircularProgressIndicator();
+
+  SizedBox buildspace() => const SizedBox(height: 30);
+
+  Wrap buildPosters() {
+    return Wrap(
+        direction: Axis.vertical,
+        spacing: 20,
+        children: [for (var movie in bloc.movies) PosterContainer(movie)]);
+  }
+
+  TextField buildSearchField() {
+    return TextField(
+      onSubmitted: (value) async {
+        setState(() {
+          loading = true;
+        });
+        await bloc.searchMovies(value);
+        setState(() {
+          loading = false;
+        });
+      },
+      textInputAction: TextInputAction.search,
+      controller: bloc.movieNameController,
+      decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30.0),
+            borderSide: BorderSide(
+              width: 0,
+              style: BorderStyle.none,
+            ),
+          ),
+          prefixIcon: Icon(Icons.search),
+          filled: true,
+          hintText: Strings.search,
+          fillColor: Colours.grey),
+    );
+  }
+
+  Align buildTitle() {
+    return const Align(
+        alignment: Alignment.centerLeft,
+        child: Text(Strings.title, style: TextStyles.textStyleTitle));
   }
 }

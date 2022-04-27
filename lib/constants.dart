@@ -8,7 +8,7 @@ class Strings {
   static const year = 'Ano';
   static const time = 'Duração';
   static const budget = 'ORÇAMENTO';
-  static const producers = 'PRODUTARAS';
+  static const producers = 'PRODUTORAS';
   static const director = 'Diretor';
   static const overview = 'Descrição';
   static const noPosterURL = 'https://www.cer-cavalos.com/images/not_found.png';
@@ -35,4 +35,13 @@ class TextStyles {
       TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600);
   static const textStyleMovieCategory =
       TextStyle(color: Colors.white, fontSize: 10);
+  static const genericSubject = TextStyle(
+  fontSize: 14,
+  fontWeight: FontWeight.w400,
+  color: Colours.gray02);
+  static const genericData = TextStyle(
+      fontSize: 11,
+      fontWeight: FontWeight.w600,
+      color: Colours.gray01);
+
 }

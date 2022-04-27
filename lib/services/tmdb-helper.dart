@@ -19,7 +19,7 @@ class TMDBHelper {
     return movieList;
   }
 
-  Future<Movie> getMovieFromTMDB(Movie movie) async {
+  Future<dynamic> getMovieFromTMDB(Movie movie) async {
     NetworkHelper networkHelperMovieData =
     NetworkHelper(tmdbUrlSpecific + movie.id + '?api_key=$apiKey&language=pt-BR');
     var movieData = await networkHelperMovieData.getData();
@@ -28,11 +28,7 @@ class TMDBHelper {
     NetworkHelper(tmdbUrlSpecific + movie.id +'/credits?api_key=$apiKey&language=pt-BR');
     var movieCast = await networkHelperMovieCast.getData();
 
-    var movieMap = [movieData, movieCast];
-
-    movie.setMovieFromJson(movieMap);
-
-    return movie;
+    return [movieData, movieCast];
   }
 
 
