@@ -11,13 +11,13 @@ class GenericTextBox extends StatelessWidget {
       margin:EdgeInsets.all(10) ,
       padding: EdgeInsets.all(15),
       decoration: const BoxDecoration(
-        color: kColorGray08,
+        color: Colours.gray08,
         borderRadius: BorderRadius.all(
           Radius.circular(10),
         ),),
       child: Row(children: [
-        Text(subject+': ', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: kColorGray03)),
-        Text(data, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: kColorGray01))
+        Text(subject+': ', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colours.gray03)),
+        Text(data, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colours.gray01))
       ]),
     );
   }

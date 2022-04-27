@@ -6,7 +6,9 @@ const tmdbUrl = 'https://api.themoviedb.org/3/search/movie?api_key=';
 const tmdbUrlSpecific = 'https://api.themoviedb.org/3/movie/';
 
 
-class Catalog {
+class TMDBHelper {
+
+
   Future<List<Movie>> getMovieListFromTMDB(String movieName) async {
     NetworkHelper networkHelper =
         NetworkHelper('$tmdbUrl$apiKey&query=$movieName&language=pt-BR');

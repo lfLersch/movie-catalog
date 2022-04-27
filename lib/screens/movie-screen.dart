@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_catalog/String.dart';
 import 'package:movie_catalog/components/category-box.dart';
 import 'package:movie_catalog/components/full-line-text-box.dart';
 import 'package:movie_catalog/components/generic-text-box.dart';
+import 'package:movie_catalog/services/format-helper.dart';
 import 'package:movie_catalog/services/network-helper.dart';
 
 import '../Models/movie.dart';
 import '../constants.dart';
-import '../services/catalog.dart';
+import '../services/tmdb-helper.dart';
 
 class MovieScreen extends StatefulWidget {
   static const String id = 'movie_screen';
@@ -21,22 +23,52 @@ class _MovieScreenState extends State<MovieScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final formatHelper = FormatHelper();
     final Movie movie = ModalRoute.of(context)?.settings.arguments! as Movie;
     return Scaffold(
       body: SingleChildScrollView(
         child: FutureBuilder(
-            future: Catalog().getMovieFromTMDB(movie),
+            future: TMDBHelper().getMovieFromTMDB(movie),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final Movie movie = snapshot.data as Movie;
-                return Container(
-                  padding: new EdgeInsets.fromLTRB(20, 50, 20, 90),
-                  child: Center(
-                    child: Wrap(
-                      alignment: WrapAlignment.center,
-                      runSpacing: 32,
-                      children: [
-                        Align(
+                return Stack(children: [
+                  Container(
+                    height: 300,
+                    color: Colours.gray08,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(20, 50, 20, 90),
+                    child: Center(
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        runSpacing: 32,
+                        children: [
+                          buildBackButton(context),
+                          buildPoster(movie),
+                          buildGrade(movie),
+                          buildMovieTitle(movie),
+                          buildOriginalTitle(movie),
+                          buildMovieGeneralInfoSection(movie, formatHelper),
+                          buildOverviewSection(movie),
+                          buildFinancialSection(formatHelper, movie),
+                          buildDirectorsSection(movie),
+                          buildCastSection(movie),
+                        ],
+                      ),
+                    ),
+                  )
+                ]);
+              } else {
+                return Container();
+              }
+            }),
+      ),
+    );
+  }
+
+  Align buildBackButton(BuildContext context) {
+    return Align(
                           alignment: Alignment.centerLeft,
                           child: SizedBox(
                             width: 80,
@@ -48,9 +80,9 @@ class _MovieScreenState extends State<MovieScreen> {
                                       // <-- Icon
                                       Icons.arrow_back_ios,
                                       size: 12,
-                                      color: kColorGray02,
+                                      color: Colours.gray02,
                                     ),
-                                    Text('Voltar', style: kTextStyleBack),
+                                    Text(Strings.back, style: TextStyles.textStyleBack),
                                   ],
                                 ),
                                 style: ButtonStyle(
@@ -64,8 +96,11 @@ class _MovieScreenState extends State<MovieScreen> {
                                           Colors.white),
                                 )),
                           ),
-                        ),
-                        Container(
+                        );
+  }
+
+  Container buildPoster(Movie movie) {
+    return Container(
                           height: 318,
                           width: 216,
                           decoration: BoxDecoration(
@@ -74,143 +109,155 @@ class _MovieScreenState extends State<MovieScreen> {
                             ),
                             image: DecorationImage(
                                 image: movie.posterPath == null
-                                    ?  NetworkImage(kTexturl)
-                                    : NetworkImage(NetworkHelper.urlPostsBank + movie.posterPath!),
+                                    ? NetworkImage(Strings.noPosterURL)
+                                    : NetworkImage(
+                                        NetworkHelper.urlPostsBank +
+                                            movie.posterPath!),
                                 fit: BoxFit.cover),
                           ),
-                        ),
-                        Row(
+                        );
+  }
+
+  Row buildGrade(Movie movie) {
+    return Row(
                           crossAxisAlignment: CrossAxisAlignment.baseline,
                           textBaseline: TextBaseline.ideographic,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children:  [
+                          children: [
                             Text(
                               movie.grade!.toStringAsFixed(1),
                               style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w600,
-                                  color: kColorGrade),
+                                  color: Colours.grade),
                             ),
                             Text(
                               '/10',
                               style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
-                                  color: kColorGray03),
+                                  color: Colours.gray03),
                             ),
                           ],
-                        ),
-                        Text(
+                        );
+  }
+
+  Text buildMovieTitle(Movie movie) {
+    return Text(
                           movie.title.toUpperCase(),
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
-                              color: kColorGray01),
-                        ),
-                        Row(
+                              color: Colours.gray01),
+                        );
+  }
+
+  Row buildOriginalTitle(Movie movie) {
+    return Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children:  [
+                          children: [
                             const Text(
-                              'Título original: ',
+                              Strings.originalTitle,
                               style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w400,
-                                  color: kColorGray02),
+                                  color: Colours.gray02),
                             ),
                             Text(
                               movie.originalTitle,
                               style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w600,
-                                  color: kColorGray03),
+                                  color: Colours.gray03),
                             ),
                           ],
-                        ),
+                        );
+  }
 
-                        Column(
+  Column buildMovieGeneralInfoSection(Movie movie, FormatHelper formatHelper) {
+    return Column(
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                GenericTextBox('Ano', movie.date!.year.toString()),
-                                GenericTextBox('Duração', '1h 20 min'),
+                                GenericTextBox(
+                                    Strings.year, movie.date!.year.toString()),
+                                GenericTextBox(Strings.time, formatHelper.toTime(movie.runtime!)),
                               ],
                             ),
                             Wrap(
                               alignment: WrapAlignment.center,
                               children: [
-                                for(String genre in movie.genres) CategoryBox(genre.toUpperCase())
+                                for (String genre in movie.genres)
+                                  CategoryBox(genre.toUpperCase())
                               ],
                             ),
                           ],
-                        ),
+                        );
+  }
 
-                        //ADICIONA MINI CAIXAS
-                        Column(
+  Column buildOverviewSection(Movie movie) {
+    return Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Text('Descrição',
+                            const Text(Strings.overview,
                                 style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
-                                    color: kColorGray02)),
+                                    color: Colours.gray02)),
                             Text(movie.overview,
                                 style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w600,
-                                    color: kColorGray01)),
+                                    color: Colours.gray01)),
                           ],
-                        ),
+                        );
+  }
 
-                        Column(
+  Column buildFinancialSection(FormatHelper formatHelper, Movie movie) {
+    return Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            FullLineTextBox('ORÇAMENTO', '\$' + movie.budget.toString()),
-                            FullLineTextBox('PRODUTORA', 'MARVEL STUDIOS'),
+                            FullLineTextBox(
+                                Strings.budget, '\$' + formatHelper.toDolar(movie.budget!)),
+                            FullLineTextBox(Strings.producers, movie.producers),
                           ],
-                        ),
+                        );
+  }
 
-                        Column(
+  Column buildCastSection(Movie movie) {
+    return Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Text('Diretor',
+                            Text(Strings.cast,
                                 style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
-                                    color: kColorGray02)),
+                                    color: Colours.gray02)),
+                            Text(movie.cast,
+                                style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colours.gray01)),
+                          ],
+                        );
+  }
+
+  Column buildDirectorsSection(Movie movie) {
+    return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(Strings.director,
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colours.gray02)),
                             Text(movie.directors,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w600,
-                                    color: kColorGray01)),
+                                    color: Colours.gray01)),
                           ],
-                        ),
-
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text('Elenco',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: kColorGray02)),
-                            Text(
-                                movie.cast,
-                                style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w600,
-                                    color: kColorGray01)),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              } else {
-                return Container();
-              }
-            }),
-      ),
-    );
+                        );
   }
 }

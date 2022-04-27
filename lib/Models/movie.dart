@@ -1,12 +1,10 @@
-import 'package:intl/intl.dart';
-
 class Movie{
   String title, id;
   List<String> genres;
   String? posterPath;
-  late String originalTitle, overview, producer, cast, directors, budget;
+  late String originalTitle, overview, cast, directors, producers;
   DateTime? date;
-  num? runtime, grade;
+  num? runtime, grade, budget;
   Movie({required this.title,required this.posterPath,required this.id,required this.genres});
 
   genresAsString(){
@@ -29,10 +27,16 @@ class Movie{
     overview = movieData['overview'];
     runtime = movieData['runtime'];
     grade = movieData['vote_average'];
-    var dolarFormat =  NumberFormat("#,##0.00", "en_US");
-    budget = dolarFormat.format(movieData['budget']);
+    budget = movieData['budget'];
+
+
     date = DateTime.parse(movieData['release_date']);
-    producer = movieData['production_companies'][0]['name'];
+
+    producers = '';
+    for(var producer in movieData['production_companies']){
+      producers += producer['name'] + ', ';
+    }
+    producers = producers.substring(0, producers.length-2);
 
     var movieCastCrew = movieJson[1];
     var genericMap = movieCastCrew['cast'];

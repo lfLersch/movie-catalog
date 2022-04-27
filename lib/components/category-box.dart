@@ -11,11 +11,11 @@ class CategoryBox extends StatelessWidget {
       margin:EdgeInsets.all(10) ,
       padding: EdgeInsets.all(15),
       decoration:  BoxDecoration(
-        border: Border.all(color: kColorGray07),
+        border: Border.all(color: Colours.gray07),
         borderRadius: BorderRadius.all(
           Radius.circular(10),
         ),),
-      child: Text(data, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: kColorGray02)),
+      child: Text(data, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colours.gray02)),
     );
   }
 }

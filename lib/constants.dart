@@ -1,36 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+class Strings {
+  static const back = 'Voltar';
+  static const originalTitle = 'Título original: ';
+  static const cast = 'Elenco';
+  static const year = 'Ano';
+  static const time = 'Duração';
+  static const budget = 'ORÇAMENTO';
+  static const producers = 'PRODUTARAS';
+  static const director = 'Diretor';
+  static const overview = 'Descrição';
+  static const noPosterURL = 'https://www.cer-cavalos.com/images/not_found.png';
+  static const title = 'Filmes';
+  static const search = 'Pesquise filmes';
+}
 
+class Colours {
+  static const grade = Color(0xFF00384C);
+  static const gray01 = Color(0xFF343A40);
+  static const gray02 = Color(0xFF5E6770);
+  static const gray03 = Color(0xFF868E96);
+  static const gray07 = Color(0xFFE9ECEF);
+  static const gray08 = Color(0xFFF1F3F5);
+  static const grey = Color(0xFFf1f3f5);
+  static const title = Color(0xFF343a40);
+}
 
-
-const kTexturl =
-    'https://www.cer-cavalos.com/images/not_found.png';
-const kTextTitle = 'Filmes';
-const kTextSearchTextField = 'Pesquise filmes';
-const kTextDesc = 'Aventura sobre Carol Danvers, uma agente da CIA que tem contato com uma raça alienígena e ganha poderes sobre-humanos. Entre os seus poderes estão uma força fora do comum e a habilidade de voar.';
-
-const kColorGrade = Color(0xFF00384C);
-const kColorGray01 = Color(0xFF343A40);
-const kColorGray02 = Color(0xFF5E6770);
-const kColorGray03 = Color(0xFF868E96);
-const kColorGray07 = Color(0xFFE9ECEF);
-const kColorGray08 = Color(0xFFF1F3F5);
-const kColorsGrey = Color(0xFFf1f3f5);
-const kColorTitle = Color(0xFF343a40);
-const kColorMovieTitle = Colors.white;
-const kColorMovieCategory = Colors.white;
-
-
-
-//#5e6770
-//#f1f3f5
-//Color(0xFF1D1E33);
-
-const kTextStyleBack =TextStyle(color: kColorGray02, fontWeight: FontWeight.w500, fontSize: 12);
-const kTextStyleTitle = TextStyle(color: kColorTitle, fontSize: 20);
-const kTextStyleMovieTitle = TextStyle(color: kColorMovieTitle, fontSize: 16, fontWeight: FontWeight.w600);
-const kTextStyleMovieCategory = TextStyle(color: kColorMovieTitle, fontSize: 10);
-
-
-//https://api.themoviedb.org/3/search/movie?api_key=1741ee8ca22dabdb71c5011551a13f40&query=Fight
+class TextStyles {
+  static const textStyleBack = TextStyle(
+      color: Colours.gray02, fontWeight: FontWeight.w500, fontSize: 12);
+  static const textStyleTitle = TextStyle(color: Colours.title, fontSize: 20);
+  static const textStyleMovieTitle =
+      TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600);
+  static const textStyleMovieCategory =
+      TextStyle(color: Colors.white, fontSize: 10);
+}

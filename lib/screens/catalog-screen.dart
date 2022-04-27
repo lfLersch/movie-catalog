@@ -2,18 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:movie_catalog/components/poster-container.dart';
 
 import '../Models/movie.dart';
+import '../catalog-bloc.dart';
 import '../constants.dart';
-import '../services/catalog.dart';
 
 class CatalogScreen extends StatefulWidget {
   static const String id = 'catalog_screen';
-  const CatalogScreen({Key? key}) : super(key: key);
 
   @override
   _CatalogScreenState createState() => _CatalogScreenState();
 }
 
 class _CatalogScreenState extends State<CatalogScreen> {
+  var bloc = new CatalogBloc();
+  List<Movie> movies = [];
+
+  @override
+  void dispose() {
+    bloc.movieNameController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,11 +31,16 @@ class _CatalogScreenState extends State<CatalogScreen> {
           child: Column(
             children: [
               const Align(
-                alignment: Alignment.centerLeft,
-                  child: Text(kTextTitle,
-                      style: kTextStyleTitle)),
+                  alignment: Alignment.centerLeft,
+                  child: Text(Strings.title, style: TextStyles.textStyleMovieTitle)),
               SizedBox(height: 30),
               TextField(
+                onSubmitted: (value) async {
+                  bloc.searchMovies(value);
+                  setState(() {});
+                },
+                textInputAction: TextInputAction.search,
+                controller: bloc.movieNameController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
@@ -38,37 +51,18 @@ class _CatalogScreenState extends State<CatalogScreen> {
                     ),
                     prefixIcon: Icon(Icons.search),
                     filled: true,
-                    hintText: kTextSearchTextField,
-                    fillColor: kColorsGrey),
+                    hintText: Strings.search,
+                    fillColor: Colours.grey),
               ),
               SizedBox(height: 30),
-              FutureBuilder(
-                  future: Catalog().getMovieListFromTMDB('marvel') ,
-                  builder: (context, snapshot){
-                    if(snapshot.hasData){
-                      return Wrap(
-                          direction: Axis.vertical,
-                          spacing: 20,
-                          children:
-                           getPosterList(snapshot.data as List<Movie>)
-                      );
-                    }
-                    return Container();
-
-                    
-                  },
-              )],
+              if (bloc.movies.isNotEmpty)
+                Wrap(direction: Axis.vertical, spacing: 20, children: [
+                  for (var movie in bloc.movies) PosterContainer(movie)
+                ]),
+            ],
           ),
         ),
       ),
     );
-  }
-
-  getPosterList(List<Movie> movies) {
-    List<Widget> posters = [];
-    for(var movie in movies){
-      posters.add(PosterContainer(movie));
-    }
-    return posters;
   }
 }

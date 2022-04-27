@@ -27,7 +27,7 @@ class _PosterContainerState extends State<PosterContainer> {
             ),
             image: DecorationImage( image:
                  widget.movie.posterPath == null
-                ?  NetworkImage(kTexturl)
+                ?  const NetworkImage(Strings.noPosterURL)
                     : NetworkImage(NetworkHelper.urlPostsBank + widget.movie.posterPath!), fit: BoxFit.cover),),
         child: Container(
           padding: EdgeInsets.fromLTRB(24, 0 , 0, 32),
@@ -51,14 +51,14 @@ class _PosterContainerState extends State<PosterContainer> {
             children:  [
               Align(
                 alignment: Alignment.bottomLeft,
-                child: Text(widget.movie.title.toUpperCase(), style: kTextStyleMovieTitle),
+                child: Text(widget.movie.title.toUpperCase(), style: TextStyles.textStyleMovieTitle),
               ),
               SizedBox(height: 12),
               Align(
                   alignment: Alignment.bottomLeft,
                   child: Text(
                     widget.movie.genresAsString(),
-                    style: kTextStyleMovieCategory,
+                    style: TextStyles.textStyleMovieCategory,
                   )),
             ],
           ),
